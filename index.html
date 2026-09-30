@@ -10,7 +10,7 @@
             --primary: #ff4b72;
             --secondary: #ff85a2;
             --bg-color: #fff5f7;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.95);
             --text-color: #4a2c35;
         }
 
@@ -32,7 +32,6 @@
             position: relative;
         }
 
-        /* Floating Hearts Background */
         .bg-hearts {
             position: fixed;
             top: 0;
@@ -55,7 +54,6 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Login Screen */
         .login-card {
             background: var(--card-bg);
             padding: 40px 30px;
@@ -116,41 +114,40 @@
             box-shadow: 0 8px 20px rgba(255, 75, 114, 0.4);
         }
 
-        /* Main App / Content */
         .app-container {
             display: none;
             width: 100%;
             max-width: 900px;
             padding: 20px;
             z-index: 10;
-            margin: 40px 0;
+            margin: 20px 0;
         }
 
-        /* Audio Player Bar */
         .audio-bar {
             background: var(--card-bg);
             padding: 15px 25px;
             border-radius: 20px;
             margin-bottom: 30px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             border: 1px solid #ffccd5;
+            text-align: center;
         }
 
-        .audio-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .audio-info span {
+        .audio-bar span {
             font-weight: bold;
             color: var(--primary);
+            font-size: 1.1rem;
         }
 
-        /* Love Letter Card */
+        .audio-bar audio {
+            width: 100%;
+            max-width: 500px;
+        }
+
         .letter-card {
             background: var(--card-bg);
             padding: 35px;
@@ -161,7 +158,7 @@
             line-height: 2;
             font-size: 1.25rem;
             text-align: center;
-            position: relative;
+            white-space: pre-line;
         }
 
         .letter-card::before {
@@ -171,7 +168,6 @@
             margin-bottom: 15px;
         }
 
-        /* Photo Gallery Section */
         .gallery-title {
             text-align: center;
             font-family: 'Reem Kufi', sans-serif;
@@ -215,7 +211,6 @@
             flex: 1;
         }
 
-        /* Admin Controls */
         .admin-panel {
             background: #fff;
             padding: 30px;
@@ -266,8 +261,8 @@
             background: #ff3333;
             color: white;
             border: none;
-            padding: 5px 12px;
-            border-radius: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 10px;
         }
@@ -282,7 +277,7 @@
         <h1>Noury 🧸🌍</h1>
         <p>ادخلي الرقم السري عشان تفتحي مفاجأتك ✨</p>
         <input type="password" id="passwordInput" placeholder="أدخلي الباسورد هنا...">
-        <button class="btn-main" onclick="checkPassword()">دخول ❤️️</button>
+        <button class="btn-main" onclick="checkPassword()">دخول ❤</button>
     </div>
 
     <!-- المحتوى الرئيسي -->
@@ -290,17 +285,14 @@
 
         <!-- مشغل الأغنية -->
         <div class="audio-bar">
-            <div class="audio-info">
-                <span>🎵 توليت - حبيبي ده عليه حاجات</span>
-            </div>
-            <audio id="bgMusic" controls autoplay loop>
-                <!-- يمكنك تغيير رابط الصوت بأي رابط آخر -->
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            <span>🎵 توليت - حبيبي ده عليه حاجات</span>
+            <audio id="bgMusic" controls preload="auto">
+                <source src="https://files.catbox.moe/0v2p9i.mp3" type="audio/mpeg">
                 متصفحك لا يدعم مشغل الصوت.
             </audio>
         </div>
 
-        <!-- لوحة التحكم للـ Admin (تظهر فقط عند دخولك) -->
+        <!-- لوحة التحكم للـ Admin -->
         <div class="admin-panel" id="adminPanel" style="display: none;">
             <h2>⚙️ لوحة تحكم باشمهندس عبد الرحمن</h2>
             
@@ -321,7 +313,7 @@
                 <label>الكلام المكتوب جنب الصورة:</label>
                 <textarea id="photoCaptionInput" style="height: 70px;"></textarea>
             </div>
-            <button class="btn-main" onclick="addPhoto()">إضافة الصورة 📸</button>
+            <button class="btn-main" id="addPhotoBtn" onclick="addPhoto()">إضافة الصورة 📸</button>
 
             <button class="btn-main btn-logout" onclick="location.reload()">تسجيل الخروج 🚪</button>
         </div>
@@ -336,12 +328,10 @@
     </div>
 
     <script>
-        // الرسالة الافتراضية المطلوبة
         const defaultLetter = `_ نوري اغلي حاجه في حياتي عايز اقولك وحشتيني اوي وحشني ضحكنا وهزارنا مهما اقعد اتكلم عنك مش هوصف حبي ليكي احسن بنت قبلتها في الدينا وقلبي اتعلق بيها كفايا لما ببص في عينك اصلا بنسي الدينا كلها يمكن احنا دلوقتي مش مع بعض بس هفضل احبك لحد ما اموت عشان انا محبتش غيرك ومش عايز غيرك في حياتي ومش قادر اتخيل حياتي من غيرك اصلا بحبك يا ام اسر 🌍❤️`;
 
         let isAdmin = false;
 
-        // تهيئة البيانات عند فتح الموقع
         window.onload = function() {
             createHearts();
             if(!localStorage.getItem('noury_letter')) {
@@ -352,7 +342,6 @@
             }
         };
 
-        // خلفية القلوب المتحركة
         function createHearts() {
             const container = document.getElementById('heartsContainer');
             for(let i = 0; i < 25; i++) {
@@ -366,21 +355,18 @@
             }
         }
 
-        // التحقق من الباسورد
         function checkPassword() {
             const pass = document.getElementById('passwordInput').value.trim();
             const loginCard = document.getElementById('loginCard');
             const appContainer = document.getElementById('appContainer');
 
             if(pass === '2952026') {
-                // دخول نوري
                 isAdmin = false;
                 loginCard.style.display = 'none';
                 appContainer.style.display = 'block';
                 loadContent();
                 playAudio();
             } else if(pass === '112008') {
-                // دخول الأدمن (باشمهندس عبد الرحمن)
                 isAdmin = true;
                 loginCard.style.display = 'none';
                 appContainer.style.display = 'block';
@@ -395,17 +381,14 @@
 
         function playAudio() {
             const audio = document.getElementById('bgMusic');
-            audio.play().catch(e => console.log("Auto-play prevented by browser"));
+            audio.play().catch(e => console.log("تنبيه: يتطلب تشغيل الصوت ضغط المتصفح أولاً"));
         }
 
-        // تحميل المحتوى (الرسالة والصور)
         function loadContent() {
-            // تحميل الرسالة
             const letter = localStorage.getItem('noury_letter');
             document.getElementById('letterDisplay').innerText = letter;
 
-            // تحميل الصور
-            const photos = JSON.parse(localStorage.getItem('noury_photos'));
+            const photos = JSON.parse(localStorage.getItem('noury_photos') || '[]');
             const photosContainer = document.getElementById('photosContainer');
             photosContainer.innerHTML = '';
 
@@ -428,7 +411,6 @@
             });
         }
 
-        // حفظ الرسالة المعدلة
         function saveLetter() {
             const newLetter = document.getElementById('adminLetterInput').value;
             localStorage.setItem('noury_letter', newLetter);
@@ -436,35 +418,70 @@
             alert('تم حفظ الرسالة بنجاح! ✨');
         }
 
-        // إضافة صورة جديدة
+        // دالة ضغط الصور تلقائياً لمنع امتلاء الذاكرة
+        function compressAndResizeImage(file, callback) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 600;
+                    const scaleFactor = MAX_WIDTH / img.width;
+                    
+                    if (img.width > MAX_WIDTH) {
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleFactor;
+                    } else {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                    }
+
+                    const ctx = canvas.getContext('canvas');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7); // ضغط الصورة لجودة 70%
+                    callback(dataUrl);
+                };
+            };
+        }
+
         function addPhoto() {
             const fileInput = document.getElementById('photoFileInput');
             const captionInput = document.getElementById('photoCaptionInput');
+            const btn = document.getElementById('addPhotoBtn');
 
             if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const photos = JSON.parse(localStorage.getItem('noury_photos'));
-                    photos.push({
-                        image: e.target.result,
-                        caption: captionInput.value
-                    });
-                    localStorage.setItem('noury_photos', JSON.stringify(photos));
-                    captionInput.value = '';
-                    fileInput.value = '';
-                    loadContent();
-                    alert('تمت إضافة الصورة والكلام بنجاح! ❤️');
-                };
-                reader.readAsDataURL(fileInput.files[0]);
+                btn.innerText = 'جاري المعالجة والحفظ... ⏳';
+                btn.disabled = true;
+
+                compressAndResizeImage(fileInput.files[0], function(compressedBase64) {
+                    try {
+                        const photos = JSON.parse(localStorage.getItem('noury_photos') || '[]');
+                        photos.push({
+                            image: compressedBase64,
+                            caption: captionInput.value
+                        });
+                        localStorage.setItem('noury_photos', JSON.stringify(photos));
+                        captionInput.value = '';
+                        fileInput.value = '';
+                        loadContent();
+                        alert('تمت إضافة الصورة والكلام بنجاح! ❤️');
+                    } catch (e) {
+                        alert('حجم الصور المضافة زاد عن المساحة المتاحة، يرجى مسح صورة قديمة لإضافة جديدة.');
+                    } finally {
+                        btn.innerText = 'إضافة الصورة 📸';
+                        btn.disabled = false;
+                    }
+                });
             } else {
                 alert('برجاء اختيار صورة أولاً!');
             }
         }
 
-        // حذف صورة
         function deletePhoto(index) {
             if(confirm('هل أنت تأكد من حذف هذه الصورة؟')) {
-                const photos = JSON.parse(localStorage.getItem('noury_photos'));
+                const photos = JSON.parse(localStorage.getItem('noury_photos') || '[]');
                 photos.splice(index, 1);
                 localStorage.setItem('noury_photos', JSON.stringify(photos));
                 loadContent();
