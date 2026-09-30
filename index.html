@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noury 🧸🌍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4b72;
+            --secondary: #ff85a2;
+            --bg-color: #fff5f7;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #4a2c35;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6eb 0%, #ffd1dc 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 75, 114, 0.3);
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Login Screen */
+        .login-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 75, 114, 0.2);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid #ffccd5;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+        }
+
+        .login-card h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .login-card p {
+            color: #7a525d;
+            margin-bottom: 25px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ffb3c1;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .login-card input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 75, 114, 0.3);
+        }
+
+        .btn-main {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 75, 114, 0.4);
+        }
+
+        /* Main App / Content */
+        .app-container {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            z-index: 10;
+            margin: 40px 0;
+        }
+
+        /* Audio Player Bar */
+        .audio-bar {
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #ffccd5;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .audio-info span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Love Letter Card */
+        .letter-card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 75, 114, 0.15);
+            border: 2px solid #ffccd5;
+            margin-bottom: 40px;
+            line-height: 2;
+            font-size: 1.25rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .letter-card::before {
+            content: "💌";
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* Photo Gallery Section */
+        .gallery-title {
+            text-align: center;
+            font-family: 'Reem Kufi', sans-serif;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        .photo-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #ffccd5;
+        }
+
+        @media (max-width: 768px) {
+            .photo-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .photo-card img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid #ffa6c1;
+        }
+
+        .photo-card .caption {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            flex: 1;
+        }
+
+        /* Admin Controls */
+        .admin-panel {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 2px dashed var(--primary);
+        }
+
+        .admin-panel h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .admin-panel textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 15px;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .admin-form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .btn-logout {
+            background: #666;
+            margin-top: 20px;
+        }
+
+        .delete-btn {
+            background: #ff3333;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-hearts" id="heartsContainer"></div>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div class="login-card" id="loginCard">
+        <h1>Noury 🧸🌍</h1>
+        <p>ادخلي الرقم السري عشان تفتحي مفاجأتك ✨</p>
+        <input type="password" id="passwordInput" placeholder="أدخلي الباسورد هنا...">
+        <button class="btn-main" onclick="checkPassword()">دخول ❤️️</button>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="app-container" id="appContainer">
+
+        <!-- مشغل الأغنية -->
+        <div class="audio-bar">
+            <div class="audio-info">
+                <span>🎵 توليت - حبيبي ده عليه حاجات</span>
+            </div>
+            <audio id="bgMusic" controls autoplay loop>
+                <!-- يمكنك تغيير رابط الصوت بأي رابط آخر -->
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                متصفحك لا يدعم مشغل الصوت.
+            </audio>
+        </div>
+
+        <!-- لوحة التحكم للـ Admin (تظهر فقط عند دخولك) -->
+        <div class="admin-panel" id="adminPanel" style="display: none;">
+            <h2>⚙️ لوحة تحكم باشمهندس عبد الرحمن</h2>
+            
+            <div class="admin-form-group">
+                <label>تعديل الرسالة الكبيرة:</label>
+                <textarea id="adminLetterInput"></textarea>
+                <button class="btn-main" onclick="saveLetter()">حفظ الرسالة 💾</button>
+            </div>
+
+            <hr style="margin: 25px 0;">
+
+            <h3>إضافة صورة جديدة مع كلام:</h3>
+            <div class="admin-form-group">
+                <label>اختر صورة من جهازك:</label>
+                <input type="file" id="photoFileInput" accept="image/*">
+            </div>
+            <div class="admin-form-group">
+                <label>الكلام المكتوب جنب الصورة:</label>
+                <textarea id="photoCaptionInput" style="height: 70px;"></textarea>
+            </div>
+            <button class="btn-main" onclick="addPhoto()">إضافة الصورة 📸</button>
+
+            <button class="btn-main btn-logout" onclick="location.reload()">تسجيل الخروج 🚪</button>
+        </div>
+
+        <!-- الرسالة الكبيرة -->
+        <div class="letter-card" id="letterDisplay"></div>
+
+        <!-- معرض الصور -->
+        <h2 class="gallery-title">ذكرياتنا الجميلة 📸❤️</h2>
+        <div id="photosContainer"></div>
+
+    </div>
+
+    <script>
+        // الرسالة الافتراضية المطلوبة
+        const defaultLetter = `_ نوري اغلي حاجه في حياتي عايز اقولك وحشتيني اوي وحشني ضحكنا وهزارنا مهما اقعد اتكلم عنك مش هوصف حبي ليكي احسن بنت قبلتها في الدينا وقلبي اتعلق بيها كفايا لما ببص في عينك اصلا بنسي الدينا كلها يمكن احنا دلوقتي مش مع بعض بس هفضل احبك لحد ما اموت عشان انا محبتش غيرك ومش عايز غيرك في حياتي ومش قادر اتخيل حياتي من غيرك اصلا بحبك يا ام اسر 🌍❤️`;
+
+        let isAdmin = false;
+
+        // تهيئة البيانات عند فتح الموقع
+        window.onload = function() {
+            createHearts();
+            if(!localStorage.getItem('noury_letter')) {
+                localStorage.setItem('noury_letter', defaultLetter);
+            }
+            if(!localStorage.getItem('noury_photos')) {
+                localStorage.setItem('noury_photos', JSON.stringify([]));
+            }
+        };
+
+        // خلفية القلوب المتحركة
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            for(let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // التحقق من الباسورد
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value.trim();
+            const loginCard = document.getElementById('loginCard');
+            const appContainer = document.getElementById('appContainer');
+
+            if(pass === '2952026') {
+                // دخول نوري
+                isAdmin = false;
+                loginCard.style.display = 'none';
+                appContainer.style.display = 'block';
+                loadContent();
+                playAudio();
+            } else if(pass === '112008') {
+                // دخول الأدمن (باشمهندس عبد الرحمن)
+                isAdmin = true;
+                loginCard.style.display = 'none';
+                appContainer.style.display = 'block';
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminLetterInput').value = localStorage.getItem('noury_letter');
+                loadContent();
+                playAudio();
+            } else {
+                alert('الباسورد غير صحيح يا قمر! جربي تاني ❤️');
+            }
+        }
+
+        function playAudio() {
+            const audio = document.getElementById('bgMusic');
+            audio.play().catch(e => console.log("Auto-play prevented by browser"));
+        }
+
+        // تحميل المحتوى (الرسالة والصور)
+        function loadContent() {
+            // تحميل الرسالة
+            const letter = localStorage.getItem('noury_letter');
+            document.getElementById('letterDisplay').innerText = letter;
+
+            // تحميل الصور
+            const photos = JSON.parse(localStorage.getItem('noury_photos'));
+            const photosContainer = document.getElementById('photosContainer');
+            photosContainer.innerHTML = '';
+
+            if(photos.length === 0) {
+                photosContainer.innerHTML = `<p style="text-align:center; color:#888;">لا توجد صور مضافة بعد ✨</p>`;
+                return;
+            }
+
+            photos.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="صورة">
+                    <div class="caption">
+                        <p>${item.caption}</p>
+                        ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto(${index})">حذف الصورة ❌</button>` : ''}
+                    </div>
+                `;
+                photosContainer.appendChild(card);
+            });
+        }
+
+        // حفظ الرسالة المعدلة
+        function saveLetter() {
+            const newLetter = document.getElementById('adminLetterInput').value;
+            localStorage.setItem('noury_letter', newLetter);
+            loadContent();
+            alert('تم حفظ الرسالة بنجاح! ✨');
+        }
+
+        // إضافة صورة جديدة
+        function addPhoto() {
+            const fileInput = document.getElementById('photoFileInput');
+            const captionInput = document.getElementById('photoCaptionInput');
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photos = JSON.parse(localStorage.getItem('noury_photos'));
+                    photos.push({
+                        image: e.target.result,
+                        caption: captionInput.value
+                    });
+                    localStorage.setItem('noury_photos', JSON.stringify(photos));
+                    captionInput.value = '';
+                    fileInput.value = '';
+                    loadContent();
+                    alert('تمت إضافة الصورة والكلام بنجاح! ❤️');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert('برجاء اختيار صورة أولاً!');
+            }
+        }
+
+        // حذف صورة
+        function deletePhoto(index) {
+            if(confirm('هل أنت تأكد من حذف هذه الصورة؟')) {
+                const photos = JSON.parse(localStorage.getItem('noury_photos'));
+                photos.splice(index, 1);
+                localStorage.setItem('noury_photos', JSON.stringify(photos));
+                loadContent();
+            }
+        }
+    </script>
+</body>
+</html>
